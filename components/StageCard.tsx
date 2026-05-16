@@ -11,56 +11,38 @@ interface StageCardProps {
 
 export function StageCard({ stage, status, progress }: StageCardProps) {
   const statusConfig = {
-    completed: {
-      icon: CheckCircle2,
-      color: "text-[#00AEEF]",
-      label: "Completed",
-      bg: "bg-[#00AEEF]/10",
-    },
-    in_progress: {
-      icon: PlayCircle,
-      color: "text-[#FF6B00]",
-      label: "In Progress",
-      bg: "bg-[#FF6B00]/10",
-    },
-    pending: {
-      icon: Clock,
-      color: "text-white/40",
-      label: "Pending",
-      bg: "bg-white/5",
-    },
+    completed: { icon: CheckCircle2, color: "text-[#00AEEF]", label: "Completed", bar: "bg-[#00AEEF]" },
+    in_progress: { icon: PlayCircle, color: "text-[#FF6B00]", label: "In Progress", bar: "bg-[#FF6B00]" },
+    pending: { icon: Clock, color: "text-white/40", label: "Pending", bar: "bg-white/30" },
   };
 
   const config = statusConfig[status];
   const Icon = config.icon;
 
   return (
-    <Card className="bg-[#111827] border-white/10 hover:border-white/20 transition-all hover:-translate-y-0.5">
+    <Card className="bg-[#111827] border-white/10 hover:border-[#00AEEF]/50 transition-all hover:-translate-y-px">
       <CardContent className="p-5">
         <div className="flex items-start justify-between">
           <div>
-            <div className="text-xs text-white/60">STAGE</div>
-            <h3 className="font-semibold text-2xl tracking-tighter mt-1">{stage}</h3>
+            <div className="text-[10px] text-white/50 tracking-[1px]">STAGE</div>
+            <h3 className="font-semibold text-[22px] tracking-[-0.5px] mt-1">{stage}</h3>
           </div>
-          <div className={cn("px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5", config.bg, config.color)}>
-            <Icon className="h-3.5 w-3.5" />
+          <div className={cn("px-2.5 py-1 rounded-full text-[10px] font-medium flex items-center gap-1", 
+            status === 'completed' ? 'bg-[#00AEEF]/10 text-[#00AEEF]' : 
+            status === 'in_progress' ? 'bg-[#FF6B00]/10 text-[#FF6B00]' : 'bg-white/10 text-white/50'
+          )}>
+            <Icon className="h-3 w-3" />
             {config.label}
           </div>
         </div>
 
         <div className="mt-6">
-          <div className="flex justify-between text-xs mb-1.5">
-            <span className="text-white/60">Progress</span>
-            <span className="font-mono text-white/80">{progress}%</span>
+          <div className="flex justify-between text-[10px] mb-1.5 text-white/50">
+            <span>PROGRESS</span>
+            <span className="font-mono">{progress}%</span>
           </div>
-          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-            <div 
-              className={cn("h-1.5 rounded-full transition-all", 
-                status === 'completed' ? 'bg-[#00AEEF]' : 
-                status === 'in_progress' ? 'bg-[#FF6B00]' : 'bg-white/30'
-              )} 
-              style={{ width: `${progress}%` }} 
-            />
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className={cn("h-1 rounded-full transition-all", config.bar)} style={{ width: `${progress}%` }} />
           </div>
         </div>
       </CardContent>
