@@ -32,6 +32,6 @@ export function ActivityPane() {
         <span>Agent: Architecture Agent</span>
         <span>Step 3/5</span>
       </div>
-    </div>
+    </Card>
   );
 }

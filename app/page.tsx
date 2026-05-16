@@ -1,6 +1,8 @@
 // app/page.tsx
 'use client';
 
+<div className="bg-red-500 p-8 rounded-3xl">TEST ROUNDED</div>
+
 export default function MetaMaxDashboard() {
   return (
     <div className="flex h-screen flex-col bg-[#0A1628] text-white overflow-hidden">
