@@ -22,6 +22,6 @@ export function StageCompletionLog() {
           </div>
         ))}
       </CardContent>
-    </div>
+    </Card>
   );
 }
