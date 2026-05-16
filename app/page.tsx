@@ -8,7 +8,7 @@ export default function MetaMaxDashboard() {
       <header className="flex items-center justify-between border-b border-white/10 px-6 py-4 bg-[#111827]">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#00AEEF] to-[#FF6B00] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#00AEEF] to-[#FF6B00] rounded-2xl flex items-center justify-center">
               <span className="text-white font-bold text-xl">M</span>
             </div>
             <span className="font-semibold text-2xl tracking-tight">MetaMax</span>
@@ -16,12 +16,12 @@ export default function MetaMaxDashboard() {
 
           <div className="ml-6">
             <div className="text-lg font-semibold tracking-tight">Project Name</div>
-            <div className="flex items-center gap-3 text-sm text-white/60 mt-0.5">
+            <div className="flex items-center gap-3 text-sm text-white/70 mt-0.5">
               <span>Global ETA</span>
               <div className="w-28 h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <div className="h-full w-[68%] bg-gradient-to-r from-[#00AEEF] to-[#FF6B00] rounded-full" />
               </div>
-              <span className="font-mono text-xs">14d 7h</span>
+              <span className="font-mono text-xs text-white/80">14d 7h</span>
             </div>
           </div>
         </div>
@@ -38,13 +38,13 @@ export default function MetaMaxDashboard() {
         <div className="w-60 border-r border-white/10 bg-[#111827] p-4 flex flex-col">
           <div className="text-xs font-semibold text-white/60 tracking-[1px] mb-3">FILES &amp; ARTIFACTS</div>
           <div className="space-y-1 text-sm">
-            <div className="px-3 py-2 bg-[#1F2937] rounded-lg text-[#00AEEF] flex items-center gap-2">
+            <div className="px-3 py-2 bg-[#1F2937] rounded-2xl text-[#00AEEF] flex items-center gap-2">
               <span>📁</span> <span>Project Root</span>
             </div>
-            <div className="pl-8 text-white/60 space-y-1">
-              <div className="px-2 py-1 hover:bg-white/5 rounded cursor-pointer">requirements.md</div>
-              <div className="px-2 py-1 hover:bg-white/5 rounded cursor-pointer">design-spec.md</div>
-              <div className="px-2 py-1 hover:bg-white/5 rounded cursor-pointer">/src</div>
+            <div className="pl-8 text-white/70 space-y-1">
+              <div className="px-2 py-1 hover:bg-white/5 rounded-xl cursor-pointer">requirements.md</div>
+              <div className="px-2 py-1 hover:bg-white/5 rounded-xl cursor-pointer">design-spec.md</div>
+              <div className="px-2 py-1 hover:bg-white/5 rounded-xl cursor-pointer">/src</div>
             </div>
           </div>
         </div>
@@ -66,14 +66,15 @@ export default function MetaMaxDashboard() {
                       <div className="text-[10px] text-white/50 tracking-[1px]">STAGE</div>
                       <div className="font-semibold text-[22px] tracking-[-0.5px] mt-1">{name}</div>
                     </div>
-                    <div className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-[#00AEEF]/10 text-[#00AEEF]">
+                    <div className={`px-2.5 py-1 rounded-full text-[10px] font-medium flex items-center gap-1
+                      ${i === 0 ? 'bg-[#00AEEF]/10 text-[#00AEEF]' : i === 1 ? 'bg-[#FF6B00]/10 text-[#FF6B00]' : 'bg-white/10 text-white/50'}`}>
                       {i === 0 ? '✓ Completed' : i === 1 ? '⟳ In Progress' : '○ Pending'}
                     </div>
                   </div>
                   <div className="mt-6">
                     <div className="flex justify-between text-[10px] mb-1.5 text-white/50">
                       <span>PROGRESS</span>
-                      <span className="font-mono">{i === 0 ? '100' : i === 1 ? '65' : '0'}%</span>
+                      <span className="font-mono text-white/80">{i === 0 ? '100' : i === 1 ? '65' : '0'}%</span>
                     </div>
                     <div className="h-1 bg-white/10 rounded-full overflow-hidden">
                       <div className={`h-1 rounded-full ${i === 0 ? 'bg-[#00AEEF]' : i === 1 ? 'bg-[#FF6B00]' : 'bg-white/30'}`} style={{ width: `${i === 0 ? 100 : i === 1 ? 65 : 0}%` }} />
@@ -102,7 +103,7 @@ export default function MetaMaxDashboard() {
             <div className="h-full bg-[#111827] border border-white/10 rounded-2xl p-6 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-4xl mb-3 opacity-40">📊</div>
-                <div className="text-sm text-white/60">Activity Window (3 states: Ribbon / Cards / Logs)</div>
+                <div className="text-sm text-white/70">Activity Window (3 states: Ribbon / Cards / Logs)</div>
               </div>
             </div>
           </div>
@@ -114,13 +115,12 @@ export default function MetaMaxDashboard() {
           <div className="p-4 border-b border-white/10">
             <div className="text-xs font-semibold text-white/60 mb-2 px-1">STAGE CONTROLS</div>
             <div className="space-y-2">
-              <button className="w-full py-2.5 rounded-xl bg-[#1F2937] hover:bg-[#374151] text-sm font-medium transition-colors">⏸ PAUSE</button>
-              <button className="w-full py-2.5 rounded-xl bg-[#FF6B00] hover:bg-[#FF8C33] text-black font-semibold transition-colors">✓ FINISH STAGE</button>
-              <button className="w-full py-2.5 rounded-xl bg-[#1F2937] hover:bg-[#374151] text-sm font-medium transition-colors">🔄 ITERATE</button>
+              <button className="w-full py-2.5 rounded-2xl bg-[#1F2937] hover:bg-[#374151] text-sm font-medium transition-colors">⏸ PAUSE</button>
+              <button className="w-full py-2.5 rounded-2xl bg-[#FF6B00] hover:bg-[#FF8C33] text-black font-semibold transition-colors">✓ FINISH STAGE</button>
+              <button className="w-full py-2.5 rounded-2xl bg-[#1F2937] hover:bg-[#374151] text-sm font-medium transition-colors">🔄 ITERATE</button>
             </div>
           </div>
 
-          {/* Log Stream */}
           <div className="flex-1 p-4 overflow-auto">
             <div className="text-xs font-semibold text-white/60 mb-3 px-1">LOG STREAM (Current Stage)</div>
             <div className="space-y-3 text-xs">
