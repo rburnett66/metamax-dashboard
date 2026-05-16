@@ -1,13 +1,12 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MetaMax Dashboard",
-  description: "AI Agent Orchestration Dashboard",
+  description: "MetaMax AI Agent Orchestration Platform",
 };
 
 export default function RootLayout({
@@ -16,10 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-[#0A0A0A] text-white antialiased`}>
-        {children}
-      </body>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
