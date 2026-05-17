@@ -1,12 +1,10 @@
 // app/page.tsx
 'use client';
 
-<div className="bg-red-500 p-8 rounded-3xl">TEST ROUNDED</div>
-
 export default function MetaMaxDashboard() {
   return (
     <div className="flex h-screen flex-col bg-[#0A1628] text-white overflow-hidden">
-      {/* ROW 1: HEADER */}
+      {/* HEADER */}
       <header className="flex items-center justify-between border-b border-white/10 px-8 py-5 bg-[#111827]">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
@@ -33,7 +31,7 @@ export default function MetaMaxDashboard() {
         </div>
       </header>
 
-      {/* ROW 2: BODY (3 columns) */}
+      {/* BODY - 3 Columns */}
       <div className="flex flex-1 overflow-hidden gap-8 p-8">
         
         {/* COLUMN 1: FILES */}
