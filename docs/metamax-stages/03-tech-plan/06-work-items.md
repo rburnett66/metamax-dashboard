@@ -1,4 +1,4 @@
-# Work Items — Design Stage (Agent Pick List)
+# Work Items — Tech Plan Stage (Agent Pick List)
 
 | #  | Work Item | Owner | Status | Signed Off |
 |----|-----------|-------|--------|------------|

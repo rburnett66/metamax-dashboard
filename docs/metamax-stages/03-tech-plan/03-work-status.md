@@ -1,4 +1,4 @@
-# Work Status — Design Stage
+# Work Status — Tech Plan Stage
 
 **Current Status:** [Not Started / In Progress / Complete]  
 **Last Updated:** [Date]  
@@ -13,11 +13,8 @@
 ## In Progress
 - [Item 1]
 
-## Blockers
-[None or list]
-
 ## Next Action
 [Next step]
 
 ---
-*Keep this file short and current.*
+*May 16, 2026*

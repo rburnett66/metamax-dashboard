@@ -1,10 +1,10 @@
-# Final Results — Design Stage
+# Final Results — Tech Plan Stage
 
 ## Delivered
 - [Deliverable 1]
 - [Deliverable 2]
 
-## Key Design Decisions
+## Key Decisions
 - [Decision 1]
 
 ## Human Sign-off
@@ -12,4 +12,4 @@
 **Date:** [Date]
 
 ---
-*Ready for Tech Plan stage*
+*Ready for Development stage*
