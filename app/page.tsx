@@ -2,48 +2,69 @@
 'use client';
 
 import { useState } from 'react';
+import { Moon, Sun, Play, Pause, RotateCcw } from 'lucide-react';
+
+interface Stage {
+  name: string;
+  status: 'completed' | 'in_progress' | 'pending';
+  progress: number;
+}
 
 export default function MetaMaxDashboard() {
-  const [stages, setStages] = useState([
-    { id: 1, name: 'IDEA', status: 'completed', progress: 100 },
-    { id: 2, name: 'DESIGN', status: 'in_progress', progress: 65 },
-    { id: 3, name: 'TECH PLAN', status: 'pending', progress: 0 },
-    { id: 4, name: 'DEV', status: 'pending', progress: 0 },
+  const [darkMode, setDarkMode] = useState(true);
+  const [stages, setStages] = useState<Stage[]>([
+    { name: 'IDEA', status: 'completed', progress: 100 },
+    { name: 'DESIGN', status: 'in_progress', progress: 65 },
+    { name: 'TECH PLAN', status: 'pending', progress: 0 },
+    { name: 'DEV', status: 'pending', progress: 0 },
   ]);
-
-  const [currentStage, setCurrentStage] = useState(2); // Design is active
+  const [currentStage, setCurrentStage] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
   const [logs, setLogs] = useState([
     { time: '14:32', message: 'Agent-01 completed research task' },
     { time: '14:28', message: 'Human approved wireframes' },
     { time: '14:19', message: 'Agent-02 started visual design' },
   ]);
 
-  const handlePause = () => {
-    alert('Stage paused! (This will connect to backend later)');
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    if (darkMode) {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
   };
 
-  const handleFinish = () => {
-    const updatedStages = stages.map((stage, index) => {
-      if (index === currentStage - 1) {
-        return { ...stage, status: 'completed', progress: 100 };
-      }
-      if (index === currentStage) {
-        return { ...stage, status: 'in_progress', progress: 25 };
-      }
-      return stage;
-    });
-    setStages(updatedStages);
-    setCurrentStage(currentStage + 1);
-    setLogs([{ time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), message: `Stage ${stages[currentStage-1].name} completed` }, ...logs]);
-    alert('Stage finished! Moving to next stage.');
+  const handlePause = () => {
+    setIsPaused(!isPaused);
+    addLog(isPaused ? 'Stage resumed' : 'Stage paused');
+  };
+
+  const handleFinishStage = () => {
+    if (currentStage < stages.length - 1) {
+      const newStages = [...stages];
+      newStages[currentStage].status = 'completed';
+      newStages[currentStage].progress = 100;
+      newStages[currentStage + 1].status = 'in_progress';
+      
+      setStages(newStages);
+      setCurrentStage(currentStage + 1);
+      addLog(`Stage ${stages[currentStage].name} completed`);
+    } else {
+      alert('All stages completed!');
+    }
   };
 
   const handleIterate = () => {
-    const feedback = prompt('What would you like to iterate on?');
-    if (feedback) {
-      setLogs([{ time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), message: `Iteration requested: ${feedback}` }, ...logs]);
-      alert('Iteration request sent to agents.');
-    }
+    const stageName = stages[currentStage].name;
+    addLog(`Iteration requested for ${stageName}`);
+    alert(`Iteration dialog would open for ${stageName}`);
+  };
+
+  const addLog = (message: string) => {
+    const now = new Date();
+    const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    setLogs(prev => [{ time, message }, ...prev].slice(0, 10));
   };
 
   return (
@@ -56,7 +77,6 @@ export default function MetaMaxDashboard() {
               <span className="text-white font-bold text-2xl">M</span>
             </div>
             <span className="font-semibold text-3xl tracking-tight">MetaMax</span>
-            <span className="text-xs text-white/40 font-mono ml-2">v0.9.2</span>
           </div>
 
           <div className="ml-8">
@@ -71,7 +91,18 @@ export default function MetaMaxDashboard() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          {/* Version Number */}
+          <div className="text-xs text-white/40 font-mono px-3 py-1 bg-white/5 rounded-full">v0.9.2</div>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-xl hover:bg-white/10 transition-colors"
+          >
+            {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+
           <div className="w-9 h-9 rounded-full bg-[#FF6B00] flex items-center justify-center text-sm font-medium">RB</div>
         </div>
       </header>
@@ -96,7 +127,7 @@ export default function MetaMaxDashboard() {
 
         {/* COLUMN 2: MAIN */}
         <div className="flex-1 flex flex-col overflow-hidden gap-8">
-          {/* 4 Stages Row */}
+          {/* Dynamic Stage Cards */}
           <div>
             <div className="flex items-center justify-between mb-4 px-1">
               <div className="text-sm font-semibold text-white/60">STAGES</div>
@@ -104,8 +135,13 @@ export default function MetaMaxDashboard() {
             </div>
 
             <div className="grid grid-cols-4 gap-6">
-              {stages.map((stage, index) => (
-                <div key={stage.id} className="bg-[#111827] border border-white/10 rounded-3xl p-7 hover:border-[#00AEEF]/50 transition-all">
+              {stages.map((stage, i) => (
+                <div 
+                  key={i} 
+                  className={`bg-[#111827] border border-white/10 rounded-3xl p-7 transition-all cursor-pointer
+                    ${i === currentStage ? 'ring-2 ring-[#00AEEF]' : 'hover:border-[#00AEEF]/50'}`}
+                  onClick={() => setCurrentStage(i)}
+                >
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="text-[11px] text-white/50 tracking-[1.5px]">STAGE</div>
@@ -114,7 +150,8 @@ export default function MetaMaxDashboard() {
                     <div className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5
                       ${stage.status === 'completed' ? 'bg-[#00AEEF]/10 text-[#00AEEF]' : 
                         stage.status === 'in_progress' ? 'bg-[#FF6B00]/10 text-[#FF6B00]' : 'bg-white/10 text-white/50'}`}>
-                      {stage.status === 'completed' ? '✓ Completed' : stage.status === 'in_progress' ? '⟳ In Progress' : '○ Pending'}
+                      {stage.status === 'completed' ? '✓ Completed' : 
+                       stage.status === 'in_progress' ? '⟳ In Progress' : '○ Pending'}
                     </div>
                   </div>
                   <div className="mt-8">
@@ -123,7 +160,11 @@ export default function MetaMaxDashboard() {
                       <span className="font-mono text-white/80">{stage.progress}%</span>
                     </div>
                     <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <div className={`h-1.5 rounded-full ${stage.status === 'completed' ? 'bg-[#00AEEF]' : stage.status === 'in_progress' ? 'bg-[#FF6B00]' : 'bg-white/30'}`} style={{ width: `${stage.progress}%` }} />
+                      <div className={`h-1.5 rounded-full transition-all
+                        ${stage.status === 'completed' ? 'bg-[#00AEEF]' : 
+                          stage.status === 'in_progress' ? 'bg-[#FF6B00]' : 'bg-white/30'}`} 
+                        style={{ width: `${stage.progress}%` }} 
+                      />
                     </div>
                   </div>
                 </div>
@@ -150,31 +191,39 @@ export default function MetaMaxDashboard() {
               <div className="text-center">
                 <div className="text-5xl mb-4 opacity-40">📊</div>
                 <div className="text-lg text-white/70">Activity Window (3 states coming soon)</div>
+                <div className="text-sm text-white/50 mt-2">Ribbon • Agent Cards • Logs</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* COLUMN 3: LOG */}
+        {/* COLUMN 3: LOG + FUNCTIONAL BUTTONS */}
         <div className="w-96 border border-white/10 bg-[#111827] rounded-3xl flex flex-col overflow-hidden">
-          {/* Buttons */}
+          {/* Functional Buttons */}
           <div className="p-6 border-b border-white/10">
             <div className="text-xs font-semibold text-white/60 tracking-[1.5px] mb-4 px-1">STAGE CONTROLS</div>
             <div className="space-y-3">
               <button 
                 onClick={handlePause}
-                className="w-full py-3.5 rounded-2xl bg-[#1F2937] hover:bg-[#374151] text-base font-medium transition-colors">
-                ⏸ PAUSE
+                className="w-full py-3.5 rounded-2xl bg-[#1F2937] hover:bg-[#374151] text-base font-medium transition-colors flex items-center justify-center gap-2"
+              >
+                {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+                {isPaused ? 'RESUME' : 'PAUSE'}
               </button>
+              
               <button 
-                onClick={handleFinish}
-                className="w-full py-3.5 rounded-2xl bg-[#FF6B00] hover:bg-[#FF8C33] text-white font-semibold transition-colors">
+                onClick={handleFinishStage}
+                className="w-full py-3.5 rounded-2xl bg-[#FF6B00] hover:bg-[#FF8C33] text-white font-semibold transition-colors flex items-center justify-center gap-2"
+              >
                 ✓ FINISH STAGE
               </button>
+              
               <button 
                 onClick={handleIterate}
-                className="w-full py-3.5 rounded-2xl bg-[#1F2937] hover:bg-[#374151] text-base font-medium transition-colors">
-                🔄 ITERATE
+                className="w-full py-3.5 rounded-2xl bg-[#1F2937] hover:bg-[#374151] text-base font-medium transition-colors flex items-center justify-center gap-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+                ITERATE
               </button>
             </div>
           </div>
